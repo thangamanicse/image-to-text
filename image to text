@@ -1,0 +1,40 @@
+# Step 1: Install necessary packages including Tesseract OCR
+!apt-get update
+!apt-get install -y tesseract-ocr
+!pip install pytesseract pillow
+
+# Step 2: Import necessary libraries
+from PIL import Image
+import pytesseract
+from google.colab import files
+
+# Step 3: Upload the image file
+uploaded = files.upload()
+
+# Step 4: Extract text from the uploaded image
+def image_to_text(image_file):
+    """
+    Extracts text from an image file using Tesseract OCR.
+
+    :param image_file: The uploaded image file in bytes format.
+    :return: Extracted text from the image.
+    """
+    # Convert uploaded file to an image
+    with Image.open(image_file) as img:
+        # Use pytesseract to perform OCR on the image
+        text = pytesseract.image_to_string(img)
+
+    return text
+
+# Step 5: Extract text from the uploaded image
+if uploaded:
+    # Get the first uploaded file name
+    image_path = list(uploaded.keys())[0]
+
+    # Extract text from the image
+    extracted_text = image_to_text(image_path)
+
+    # Print the extracted text
+    print("Extracted Text:\n", extracted_text)
+else:
+    print("No file was uploaded.")
